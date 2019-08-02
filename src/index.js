@@ -1,21 +1,38 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom'
 import './index.css';
-import {App} from './App';
-import * as serviceWorker from './serviceWorker';
-import Provider from "react-redux/es/components/Provider";
-import {createStore} from "redux";
+import {applyMiddleware, createStore} from "redux";
 import allReducers from "./reducers";
+import {createRouter} from "router5";
+import browserPlugin from 'router5-plugin-browser';
+import {reduxPlugin, router5Middleware} from "redux-router5";
+import {Provider} from "react-redux";
+import {App} from "./App";
+import {RouterProvider} from "react-router5";
 
-const store = createStore(allReducers);
+const routes = [
+  {name: 'home', path: '/'},
+  {name: 'hello', path: '/hello'}
+];
+
+
+const router = createRouter(routes);
+router.usePlugin(browserPlugin());
+
+const createStoreWithMiddleware = applyMiddleware(
+  router5Middleware(router)
+)(createStore);
+
+const store = createStoreWithMiddleware(allReducers);
+
+router.usePlugin(reduxPlugin(store.dispatch));
+router.start('/');
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App/>
-  </Provider>,
+  <RouterProvider router={router}>
+    <Provider store={store}>
+      <App/>
+    </Provider>
+  </RouterProvider>,
   document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
