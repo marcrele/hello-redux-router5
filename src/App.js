@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {decrement, increment} from "./actions";
-import {Link} from "react-router5";
+import {routeTo} from "./actions/routing";
 
 const App = props => {
   const {counter, decrement, increment} = props;
@@ -11,10 +11,8 @@ const App = props => {
       <h1>Hello {counter}</h1>
       <button onClick={() => increment(5)}>+</button>
       <button onClick={() => decrement()}>-</button>
-      <Link routeName="hello">hello</Link>
-      <Link routeName="home">home</Link>
-      {/*<button onClick={router.navigate('hello')}>hello</button>*/}
-      {/*<button onClick={router.navigate('home')}>home</button>*/}
+      <span onClick={props.onRouteToHome}>Home</span>
+      <span onClick={props.onRouteToHello}>Hello</span>
     </div>
   );
 };
@@ -23,10 +21,12 @@ function mapState(state) {
   return {counter: state.counter, router: state.router};
 }
 
-const actionCreators = {
-  decrement: decrement,
-  increment: increment
-};
+const actionCreators = dispatch => ({
+  decrement: () => dispatch(decrement()),
+  increment: (num) => dispatch(increment(num)),
+  onRouteToHome: () => dispatch(routeTo('home')),
+  onRouteToHello: () => dispatch(routeTo('hello')),
+});
 
 const connectedApp = connect(mapState, actionCreators)(App);
 export {connectedApp as App};
