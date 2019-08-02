@@ -13,7 +13,7 @@ import {createRouteTo} from "./middleware/routing";
 
 const routes = [
   {name: 'home', path: '/'},
-  {name: 'hello', path: '/hello'}
+  {name: 'hello', path: '/:counter/hello'}
 ];
 
 const router = createRouter(routes);

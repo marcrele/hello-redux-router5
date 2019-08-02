@@ -6,7 +6,7 @@ export const createRouteTo = deps => store => next => action => {
     const {router}  = deps;
     const {payload} = action;
     const {name, routerOptions, routeParams} = payload;
-    router.navigate(name);
+    router.navigate(name, routeParams, routerOptions);
   }
 
   return next(action);

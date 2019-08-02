@@ -25,7 +25,7 @@ const actionCreators = dispatch => ({
   decrement: () => dispatch(decrement()),
   increment: (num) => dispatch(increment(num)),
   onRouteToHome: () => dispatch(routeTo('home')),
-  onRouteToHello: () => dispatch(routeTo('hello')),
+  onRouteToHello: () => dispatch(routeTo('hello', {counter: 5})),
 });
 
 const connectedApp = connect(mapState, actionCreators)(App);
